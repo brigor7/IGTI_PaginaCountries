@@ -34,9 +34,6 @@ async function fetchCountries() {
   const res = await fetch('http://restcountries.eu/rest/v2/all');
   const json = await res.json();
   allCountries = json.map((country) => {
-    /**Retorno com destruction - quando o nome e o atributo são iguais
-     * colocar somente o nome do atributo sem os dois pontos :
-     */
     const { numericCode, translations, population, flag } = country;
     return {
       id: numericCode,
@@ -44,14 +41,6 @@ async function fetchCountries() {
       population,
       flag,
     };
-    /**Retorno classico
-    return {
-      id: country.numericCode,
-      name: country.translations.pt,
-      population: country.population,
-      flag: country.flag,
-    };
-     */
   });
   favoritesCountries = allCountries;
   render();
