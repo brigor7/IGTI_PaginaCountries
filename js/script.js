@@ -17,9 +17,9 @@ let numberFormat = null;
 
 window.addEventListener('load', () => {
   console.log('js vinculado ao html');
-  /**Inicializando variáveis */
-  tabCountries = document.querySelector('tab-countries');
-  tabFavorites = document.querySelector('tab-favorites');
+  /**Inicializando estado dos objetos */
+  tabCountries = document.querySelector('#tabCountries');
+  tabFavorites = document.querySelector('#tabFavorites');
   countCountries = document.querySelector('count-countries');
   countFavorites = document.querySelector('count-favorites');
   totalPopulationList = document.querySelector('total-population-countries');
@@ -27,7 +27,6 @@ window.addEventListener('load', () => {
   totalPopulationFavorites = 
   document.querySelector('total-population-favorites');
   numberFormat = Intl.NumberFormat('pt-BR');
-
   fetchCountries();
 });
 
@@ -53,20 +52,63 @@ async function fetchCountries() {
       flag: country.flag,
     };
      */
-    render();
   });
-  console.log(allCountries);
+  favoritesCountries = allCountries;
+  render();
 }
 
 /**Escrever os dados no html, através de funções menores */
 function render() {
   renderCountryList();
-  renderFavorites();
+  renderFavoritesList();
   renderSummary();
-  renderCountryList();
 }
 
-function renderCountryList() {}
-function renderFavorites() {}
+function renderCountryList() {
+  let countriesHTML = document.createElement('div');
+
+  allCountries.forEach((country) => {
+    const { name, flag, id, population } = country;
+    const countryHTML = `
+    <div>
+      <a id=${id} class="waves-effect waves-light btn">+</a>
+    </div>
+    <div>
+      <img src="${flag}" alt="${name}">
+    </div>
+    <div>
+      <ul>
+        <li>${name}</li>
+        <li>${numberFormat.format(population)}</li>
+    </div>
+    `;
+    countriesHTML.innerHTML += countryHTML;
+  });
+  tabCountries.innerHTML = countriesHTML.innerHTML;
+}
+
+function renderFavoritesList() {
+  let favoritesHTML = document.createElement('div');
+
+  favoritesCountries.forEach((favoriteCountry) => {
+    const { name, flag, id, population } = favoriteCountry;
+    const favoriteHTML = `
+      <div>
+        <a id=${id} class="waves-effect waves-light btn">+</a>
+      </div>
+      <div>
+        <img src="${flag}" alt="${name}">
+      </div>
+      <div>
+        <ul>
+          <li>${name}</li>
+          <li>${numberFormat.format(population)}</li>
+      </div>
+    `;
+    favoritesHTML.innerHTML += favoriteCountry;
+  });
+  //console.log('***' + favoritesHTML.innerHTML);
+  tabFavorites.innerHTML = favoritesHTML.innerHTML;
+}
 function renderSummary() {}
 function handleCountryButtons() {}
